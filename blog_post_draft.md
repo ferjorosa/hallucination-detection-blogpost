@@ -65,7 +65,7 @@ For the LLM baselines, we tested various prompts like "Can you answer the questi
 </table>
 </center>
 
-Our experiments reveal several key findings that challenge conventional wisdom about model size and performance.
+Our experiments reveal several key findings about model size and performance.
 
 **Prompt sensitivity:** Zero-shot LLM performance varies dramatically with prompt engineering, especially for smaller models. Testing 20 different prompts, we found Llama 3 1B's accuracy could swing by over 15 percentage points based on wording alone. Even larger models like GPT-4o benefited from careful prompt engineering.
 
