@@ -33,7 +33,7 @@ We frame groundedness detection as a binary classification task. Given a query Q
 
 We compared two approaches:
 
-* **Lightweight Encoders:** We fine-tuned compact models like [RoBERTa](https://arxiv.org/abs/1907.11692) (125M parameters) and [NomicBERT](https://arxiv.org/abs/2402.01613) (137M parameters) specifically for this groundedness classification task. These models excel at understanding relationships between text pairs - exactly what we need for comparing queries and contexts.
+* **Lightweight Encoders:** We fine-tuned compact models like [RoBERTa](https://arxiv.org/abs/1907.11692) (125M parameters) and [ModernBERT](https://arxiv.org/pdf/2412.13663) (149M parameters) specifically for this groundedness classification task. These models excel at understanding relationships between text pairs - exactly what we need for comparing queries and contexts.
 
 * **Large Decoder LLMs:** We tested state-of-the-art models including fine-tuned Llama 3 (1B, 3B, and 8B parameters) as well as zero-shot GPT-4o and Claude Sonnet, asking them directly whether a context supports a query with carefully crafted prompts.
 
@@ -73,7 +73,7 @@ Our experiments reveal several key findings about model size and performance.
 
 **Model size matters, but architecture matters more:** Larger models do perform better within their architecture type - RoBERTa-Large beats RoBERTa-Base by 12-15 points, and Llama 8B vastly outperforms Llama 1B (74.8% vs 42.1% zero-shot). However, a fine-tuned RoBERTa-Large (355M parameters) can compete with much larger decoder models because encoders are naturally suited for semantic matching tasks like groundedness detection, while LLMs are optimized for open-ended generation.
 
-**Fast Payback on Efficiency:** Encoder models deliver massive inference cost savings that quickly offset fine-tuning expenses. The cost of fine-tuning ModernBERT equals fewer than 5,000 inference queries with Llama 3 8B - meaning the investment pays back almost immediately in high-throughput production systems where you might process thousands of queries daily.
+**Fast payback on efficiency:** Encoder models deliver massive inference cost savings that quickly offset fine-tuning expenses. The cost of fine-tuning ModernBERT equals fewer than 5,000 inference queries with Llama 3 8B - meaning the investment pays back almost immediately in high-throughput production systems where you might process thousands of queries daily.
 
 ## Conclusions and Future Work
 
