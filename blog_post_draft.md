@@ -1,14 +1,16 @@
 # Small Encoders Can Rival Large Decoders in Detecting Groundedness
 
+*Building trustworthy agentic systems requires efficient methods to verify that responses are grounded in provided context. This joint study with Mila - Quebec AI Institute shows that lightweight encoder models like RoBERTa and ModernBERT, fine-tuned for groundedness detection, can match the accuracy of much larger decoder models like GPT-4o and Claude Sonnet 3.5 while delivering 50x faster inference and 1000x cheaper training. By framing groundedness as a binary classification task rather than a generation problem, we demonstrate a practical path toward production-ready agent systems.*
+
 ## Introduction
 
 Agentic AI systems are quickly becoming the backbone of modern automation. With the Model Context Protocol (MCP), developers can give agents real tools: they can fetch news, query internal databases, or even run code. 
 
 In theory, this should make them grounded and trustworthy as they access real-time information. But in practice, current agents are built on top of large language models (LLMs). And LLMs are storytellers. Even when an MCP tool returns the right answer, the model might ignore it. The output might look noisy, the phrasing might be odd, or the model might simply trust its own "memory" from pretraining more than the tool output.
 
-That happens because [LLMs are trained to predict the next token, not to verify whether a claim is actually backed up by the information provided to them](https://arxiv.org/abs/2403.05612). This is also why they often struggle to simply say "I do not know". Their goal is to keep the conversation going with something that sounds plausible, not to signal uncertainty. As a result, when an agent calls a tool, that information only matters if the LLM actually incorporates it into its response. Without groundedness (i.e., sticking to what the context actually says), users cannot really trust an agent's output. In other words, groundedness is a classification problem ("supported" / "not supported"), not a generative one.
+That happens because [LLMs are trained to predict the next token, not to verify whether a claim is actually backed up by the information provided to them](https://arxiv.org/abs/2403.05612). This is also why they often struggle to simply say "I do not know." Their goal is to keep the conversation going with something that sounds plausible, not to signal uncertainty. As a result, when an agent calls a tool, that information only matters if the LLM actually incorporates it into its response. Without groundedness (i.e., grounded in what the context actually says), users cannot really trust an agent's output. In other words, groundedness is a classification problem ("supported" / "not supported"), not a generative one.
 
-[This joint study between Aily Labs and the Mila AI Institute](https://arxiv.org/abs/2506.21288) explores groundedness detection as a lightweight pre-check before triggering the next costly LLM generation. We show that compact encoders such as [RoBERTa](https://arxiv.org/abs/1907.11692) and [ModernBERT](https://arxiv.org/abs/2412.13663), fine-tuned on curated datasets, can match or even surpass large decoder LLMs like Llama, GPT-4o and Claude Sonnet in detecting groundedness. Crucially, they do so orders of magnitude faster, achieving up to 50× lower latency and 1000× cheaper training. The result: more efficient, interpretable, and sustainable agent pipelines.
+[This joint study between Aily Labs and the Mila AI Institute](https://arxiv.org/abs/2506.21288) explores groundedness detection as a lightweight pre-check before triggering the next costly LLM generation. We show that compact encoders such as [RoBERTa](https://arxiv.org/abs/1907.11692) and [ModernBERT](https://arxiv.org/abs/2412.13663), fine-tuned on curated datasets, can match or even surpass large decoder LLMs like Llama, GPT-4o and Claude Sonnet 3.5 in detecting groundedness. Crucially, they do so orders of magnitude faster, achieving up to 50× lower latency and 1000× cheaper training. The result: more efficient, interpretable, and sustainable agent pipelines.
 
 <center>
 <table>
@@ -27,7 +29,7 @@ That happens because [LLMs are trained to predict the next token, not to verify 
 
 ## Experimental Setup
 
-We frame groundedness detection as a binary classification task. Given a query Q and some context C (like a document retrieved by an agent's tool), we want to predict whether C contains enough information to answer Q. This is a simple "supported" vs "not supported" decision - much simpler than generating a full response.
+We frame groundedness detection as a binary classification task. Given a query $Q$ and some context $C$ (like a document retrieved by an agent's tool), we want to predict whether $C$ contains enough information to answer $Q$. This is a simple "supported" vs "not supported" decision - much simpler than generating a full response.
 
 ### Models We Tested
 
@@ -35,7 +37,7 @@ We compared two approaches:
 
 * **Lightweight Encoders:** We fine-tuned compact models like [RoBERTa](https://arxiv.org/abs/1907.11692) (125M parameters) and [ModernBERT](https://arxiv.org/pdf/2412.13663) (149M parameters) specifically for this groundedness classification task. These models excel at understanding relationships between text pairs - exactly what we need for comparing queries and contexts.
 
-* **Large Decoder LLMs:** We tested state-of-the-art models including fine-tuned Llama 3 (1B, 3B, and 8B parameters) as well as zero-shot GPT-4o and Claude Sonnet, asking them directly whether a context supports a query with carefully crafted prompts.
+* **Large Decoder LLMs:** We tested state-of-the-art models including fine-tuned Llama 3 (1B, 3B, and 8B parameters) as well as zero-shot GPT-4o and Claude Sonnet 3.5, asking them directly whether a context supports a query with carefully crafted prompts.
 
 ### Datasets and Training
 
