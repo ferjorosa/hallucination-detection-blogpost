@@ -1,8 +1,6 @@
-# How We Made AI Agents 50x Faster (and 1000x Cheaper) at Catching Their Own Mistakes
+# How To Make Agents Efficient At Catching Their Own Mistakes
 
 *Small, efficient AI models can catch agent hallucinations as accurately as large models, but 50x faster and 1000x cheaper, making real-time verification practical for production.*
-
-
 
 ## The Problem: Expensive Mistakes
 
