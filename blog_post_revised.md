@@ -27,7 +27,7 @@ Thus, we needed a different approach entirely.
 
 When we ask, *“Is this agent response supported by the provided context?”* we're not asking the model to create new content. We're asking for a binary judgment: **supported** or **not supported**. This concept is often referred to as **groundedness**. This reframe opens up a completely different class of AI models.
 
-While models like GPT, Sonnet, and Llama are **decoder** models that excel at text generation, we can use **encoder** models like [RoBERTa](https://arxiv.org/abs/1907.11692) and [ModernBERT](https://arxiv.org/abs/2412.13663) for this task. These encoder models are specifically designed to understand relationships between pieces of text (exactly what we need for comparing an agent's response against the provided context). And crucially, they're usually much smaller and thus faster.
+While models like GPT, Sonnet, and Llama are **decoder** models that excel at text generation, we can use **encoder** models like [RoBERTa](https://arxiv.org/abs/1907.11692), [ModernBERT](https://arxiv.org/abs/2412.13663) and [Nomic-BERT](https://arxiv.org/abs/2402.01613) for this task. These encoder models are specifically designed to understand relationships between pieces of text (exactly what we need for comparing an agent's response against the provided context). And crucially, they're usually much smaller and thus faster.
 
 The result? We can build a verification layer that's orders of magnitude faster and cheaper than using LLMs, while maintaining the same level of accuracy.
 
@@ -76,7 +76,7 @@ Some revealing findings:
 
 **Model size matters, but architecture matters more:** Within encoders, RoBERTa-Large beats RoBERTa-Base by 12–15 points across datasets. However, fine-tuned encoders can rival much larger decoder models because their architecture is inherently suited for semantic matching and comparison tasks, not text generation.
 
-**Fine-tuning delivers consistent gains:** Fine-tuning improves accuracy by 10–30 points across all model types. For instance, Llama 3.1 8B jumped from **81.9% to 91.1%** on SQuAD v2.0. Most remarkably, fine-tuned **RoBERTa-Large (90.2%)** came within ~5% of GPT-4o (95.5%) while being *50x faster* in inference and *1000x cheaper* in training.
+**Fine-tuning delivers consistent gains:** Fine-tuning improves accuracy by 10–30 points across all model types. For instance, Llama 3.1 8B jumped from **81.9% to 91.1%** on SQuAD v2.0. Most remarkably, fine-tuned **RoBERTa-Large (90.2%)** came within ~5% of GPT-4o (95.5%). Similar results were achieved with Nomic-BERT, while requiring 50x fewer inference FLOPs (floating-point operations) and 1000x fewer training FLOPs than Llama 3.1 8B, making it vastly more efficient in both compute and cost.
 
 **Fast payback on efficiency:** Encoder models deliver massive inference cost savings that quickly offset fine-tuning expenses. The cost of fine-tuning ModernBERT equals fewer than 5,000 inference queries with Llama 3 8B, meaning the investment pays back almost immediately in high-throughput production systems where you might process millions of queries daily.
 
