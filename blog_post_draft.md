@@ -10,7 +10,7 @@ In theory, this should make them grounded and trustworthy as they access real-ti
 
 That happens because [LLMs are trained to predict the next token, not to verify whether a claim is actually backed up by the information provided to them](https://arxiv.org/abs/2403.05612). This is also why they often struggle to simply say "I do not know." Their goal is to keep the conversation going with something that sounds plausible, not to signal uncertainty. As a result, when an agent calls a tool, that information only matters if the LLM actually incorporates it into its response. Without groundedness (i.e., grounded in what the context actually says), users cannot really trust an agent's output. In other words, groundedness is a classification problem ("supported" / "not supported"), not a generative one.
 
-[This joint study between Aily Labs and the Mila AI Institute](https://arxiv.org/abs/2506.21288) explores groundedness detection as a lightweight pre-check before triggering the next costly LLM generation. We show that compact encoders such as [RoBERTa](https://arxiv.org/abs/1907.11692) and [ModernBERT](https://arxiv.org/abs/2412.13663), fine-tuned on curated datasets, can match or even surpass large decoder LLMs like Llama, GPT-4o and Claude Sonnet 3.5 in detecting groundedness. Crucially, they do so orders of magnitude faster, achieving up to 50× lower latency and 1000× cheaper training. The result: more efficient, interpretable, and sustainable agent pipelines.
+[This joint study between Aily Labs and the Mila AI Institute](https://arxiv.org/abs/2506.21288) explores groundedness detection as a lightweight pre-check before triggering the next costly LLM generation. We show that compact encoders such as [RoBERTa](https://arxiv.org/abs/1907.11692), [ModernBERT](https://arxiv.org/abs/2412.13663) and [Nomic-BERT](https://arxiv.org/abs/2402.01613), fine-tuned on curated datasets, can match or even surpass large decoder LLMs like Llama, GPT-4o and Claude Sonnet 3.5 in detecting groundedness. Crucially, they do so orders of magnitude faster, achieving up to 50x lower latency and 1000x cheaper training. The result: more efficient, interpretable, and sustainable agent pipelines.
 
 <center>
 <table>
@@ -71,7 +71,7 @@ Our experiments reveal several key findings about model size and performance.
 
 **Prompt sensitivity:** Zero-shot LLM performance varies dramatically with prompt engineering, especially for smaller models. Testing 20 different prompts, we found Llama 3 1B's accuracy could swing by over 15 percentage points based on wording alone. Even larger models like GPT-4o benefited from careful prompt engineering.
 
-**Fine-tuning delivers consistent gains:** Fine-tuning improves performance by 10-30 percentage points across all model types. For example, Llama 3.1 8B jumped from 81.9% to 91.1% on SQuAD v2.0 with fine-tuning. Crucially, fine-tuned RoBERTa (90.2% on SQuAD v2.0) comes within ~10% of the best zero-shot models like GPT-4o (95.5%) while being orders of magnitude more efficient.
+**Fine-tuning delivers consistent gains:** Fine-tuning improves performance by 10-30 percentage points across all model types. For example, Llama 3.1 8B jumped from 81.9% to 91.1% on SQuAD v2.0 with fine-tuning. Crucially, fine-tuned RoBERTa (90.2% on SQuAD v2.0) comes within ~10% of the best zero-shot models like GPT-4o (95.5%) while being orders of magnitude more efficient. Additionally, Nomic-BERT achieved comparable accuracy while requiring 50x fewer inference FLOPs (floating-point operations) and 1000x fewer training FLOPs than Llama 3.1 8B, making it vastly more efficient in both compute and cost.
 
 **Model size matters, but architecture matters more:** Larger models do perform better within their architecture type - RoBERTa-Large beats RoBERTa-Base by 12-15 points, and Llama 8B vastly outperforms Llama 1B (74.8% vs 42.1% zero-shot). However, a fine-tuned RoBERTa-Large (355M parameters) can compete with much larger decoder models because encoders are naturally suited for semantic matching tasks like groundedness detection, while LLMs are optimized for open-ended generation.
 
@@ -79,7 +79,7 @@ Our experiments reveal several key findings about model size and performance.
 
 ## Conclusions and Future Work
 
-This study demonstrates that lightweight encoder models like RoBERTa and ModernBERT can match larger decoder models in groundedness detection while delivering 50x faster inference and 1000x cheaper training. This makes real-time groundedness filtering practical for production agent systems, preventing hallucinations before expensive generation rather than detecting them afterward.
+This study demonstrates that lightweight encoder models like RoBERTa and ModernBERT can match larger decoder models in groundedness detection while delivering much faster inference and much cheaper training. This makes real-time groundedness filtering practical for production agent systems, preventing hallucinations before expensive generation rather than detecting them afterward.
 
 However, our work focused on single-document scenarios. But what happens when agents need to synthesize information across multiple documents for multi-hop reasoning? How can we detect when contexts contain internal contradictions that might mislead even a well-grounded response?
 
